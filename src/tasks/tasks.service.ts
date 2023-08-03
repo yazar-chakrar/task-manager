@@ -1,18 +1,25 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
-import { Task, TaskStatus } from "./task.model";
+import { TaskStatus } from "./task.types";
 import { randomUUID } from "crypto";
 import { CreateTaskDto } from "./dto/create-task.dto";
 import { GetTasksFilterDto } from "./dto/get-tasks-filter.dto";
+import { TaskRepository } from "./task.repository";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Task } from "./task.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class TasksService {
-	private tasks: Task[] = [];
+	constructor(
+		/* @InjectRepository(Task) */
+		private taskRepository: TaskRepository,
+	) {}
 
-	getAllTasks(): Task[] {
+	/* getAllTasks(): Task[] {
 		return this.tasks;
-	}
+	} */
 
-	getTasksWithFilters(filterDto: GetTasksFilterDto): Task[] {
+	/* getTasksWithFilters(filterDto: GetTasksFilterDto): Task[] {
 		const { status, search } = filterDto;
 		let tasks = this.getAllTasks();
 		if (status) {
@@ -25,23 +32,23 @@ export class TasksService {
 			);
 		}
 		return tasks;
-	}
+	} */
 
-	getTaskById(id: string): Task {
-		const task = this.tasks.find(task => task.id === id);
+	async getTaskById(id: number): Promise<Task> {
+		const task = await this.taskRepository.firstWhere(id);
 		if (!task) {
 			throw new NotFoundException();
 		}
 		return task;
 	}
 
-	deleteTaskById(id: string): Task {
+	/* deleteTaskById(id: string): Task {
 		const found = this.getTaskById(id);
 		this.tasks = this.tasks.filter(task => task.id !== found.id);
 		return found;
-	}
+	} */
 
-	createTask(createTaskDto: CreateTaskDto): Task {
+	/* createTask(createTaskDto: CreateTaskDto): Task {
 		const { title, description } = createTaskDto;
 		const task: Task = {
 			id: randomUUID(),
@@ -51,11 +58,11 @@ export class TasksService {
 		};
 		this.tasks.push(task);
 		return task;
-	}
+	} */
 
-	updateTaskStatus(id: string, status: TaskStatus): Task {
+	/* updateTaskStatus(id: string, status: TaskStatus): Task {
 		const task = this.getTaskById(id);
 		task.status = status;
 		return task;
-	}
+	} */
 }
