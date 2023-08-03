@@ -11,13 +11,13 @@ import { Repository } from "typeorm";
 @Injectable()
 export class TasksService {
 	constructor(
-		/* @InjectRepository(Task) */
+		@InjectRepository(Task)
 		private taskRepository: TaskRepository,
 	) {}
 
-	/* getAllTasks(): Task[] {
-		return this.tasks;
-	} */
+	async getAllTasks(): Promise<Task[]> {
+		return await this.taskRepository.find();
+	}
 
 	/* getTasksWithFilters(filterDto: GetTasksFilterDto): Task[] {
 		const { status, search } = filterDto;
@@ -48,17 +48,9 @@ export class TasksService {
 		return found;
 	} */
 
-	/* createTask(createTaskDto: CreateTaskDto): Task {
-		const { title, description } = createTaskDto;
-		const task: Task = {
-			id: randomUUID(),
-			title,
-			description,
-			status: TaskStatus.DONE,
-		};
-		this.tasks.push(task);
-		return task;
-	} */
+	async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+		return await this.taskRepository.createTask(createTaskDto);
+	}
 
 	/* updateTaskStatus(id: string, status: TaskStatus): Task {
 		const task = this.getTaskById(id);
