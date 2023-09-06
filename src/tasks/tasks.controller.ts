@@ -26,10 +26,7 @@ export class TasksController {
 	getTasksFilter(
 		@Query(ValidationPipe) filterDto: GetTasksFilterDto,
 	): Promise<Task[]> {
-		/* if (Object.keys(filterDto).length) {
-			return this.tasksService.getTasksWithFilters(filterDto);
-		} */
-		return this.tasksService.getAllTasks();
+		return this.tasksService.getTasks(filterDto);
 	}
 
 	@Get("/:id")
@@ -37,10 +34,10 @@ export class TasksController {
 		return this.tasksService.getTaskById(id);
 	}
 
-	/* @Delete("/:id")
-	deleteTaskById(@Param("id") id: string): Task {
-		return this.TasksService.deleteTaskById(id);
-	} */
+	@Delete("/:id")
+	deleteTaskById(@Param("id") id: number): Promise<void> {
+		return this.tasksService.deleteTaskById(id);
+	}
 
 	@Post()
 	@UsePipes(ValidationPipe)
@@ -48,11 +45,11 @@ export class TasksController {
 		return this.tasksService.createTask(createTaskDto);
 	}
 
-	/* @Patch("/:id/status")
+	@Patch("/:id/status")
 	updateTaskStatus(
-		@Param("id") id: string,
+		@Param("id") id: number,
 		@Body("status", TaskStatusValidationPipe) status: TaskStatus,
-	): Task {
-		return this.TasksService.updateTaskStatus(id, status);
-	} */
+	): Promise<Task> {
+		return this.tasksService.updateTaskStatus(id, status);
+	}
 }
