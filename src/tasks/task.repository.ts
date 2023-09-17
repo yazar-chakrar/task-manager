@@ -12,11 +12,12 @@ export class TaskRepository extends Repository<Task> {
 		super(Task, dataSource.createEntityManager());
 	}
 
-	async getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
+	async getTasks(filterDto: GetTasksFilterDto, user: User): Promise<Task[]> {
 		const { status, search } = filterDto;
 		console.log(filterDto);
 		const query = this.createQueryBuilder("task");
 
+		query.andWhere("task.userId = :userId", { userId: user.id });
 		if (status) {
 			query.andWhere("task.status = :status", { status });
 		}
@@ -28,6 +29,7 @@ export class TaskRepository extends Repository<Task> {
 				},
 			);
 		}
+
 		const tasks = await query.getMany();
 		return tasks;
 	}
