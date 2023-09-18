@@ -20,18 +20,6 @@ dotenv.config({
 });
 
 export const typeOrmConfig: TypeOrmModuleOptions = {
-	/* type: "mysql",
-	host: process.env.DB_HOST,
-	port: parseInt(process.env.DB_PORT, 10),
-	username: process.env.DB_USER,
-	password: process.env.DB_PWD,
-	database: process.env.DB_NAME, */
-	//entities: [__dirname + "/../**/*.entity{.ts,.js}"],
-
-	//synchronize: true,
-	//logging: true,
-	//dropSchema: true,
-
 	type: "postgres",
 
 	host: getEnvValue("DB_HOST"),
@@ -43,12 +31,12 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
 	entities: [__dirname + "/../**/*.entity{.ts,.js}"],
 
 	migrationsTableName: "migration",
-
 	migrations: ["src/migration/*.ts"],
 
 	/* cli: {
 		migrationsDir: "src/migration",
 	}, */
+
 	synchronize: true,
 	//logging: true,
 	dropSchema: true,
