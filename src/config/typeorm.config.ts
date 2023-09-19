@@ -39,7 +39,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
 
 	synchronize: true,
 	//logging: true,
-	dropSchema: true,
+	//dropSchema: true,
 
 	ssl: isProduction(),
 };
