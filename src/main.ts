@@ -7,6 +7,7 @@ import {
 import { AppModule } from "./app.module";
 import { winstonModuleConfig } from "./config/logging/winstonModule.config";
 import helmet from "@fastify/helmet";
+import { corsConfig } from "./config/sec/cors.config";
 
 async function bootstrap() {
 	const app = await NestFactory.create<NestFastifyApplication>(
@@ -17,6 +18,7 @@ async function bootstrap() {
 		},
 	);
 	app.register(helmet);
+	app.enableCors(corsConfig);
 	await app.listen(3000);
 }
 bootstrap();
